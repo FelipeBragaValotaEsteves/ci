@@ -69,7 +69,7 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-        - name: 🏷️ Define TAG da imagem (versão do package.json)
+      - name: 🏷️ Define TAG da imagem (versão do package.json)
         id: vars
         run: |
           VERSION=$(node -p "require('./package.json').version")

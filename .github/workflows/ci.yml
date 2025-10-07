@@ -69,9 +69,11 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: 🏷️ Define TAG da imagem (versão do package.json)
+        - name: 🏷️ Define TAG da imagem (versão do package.json)
         id: vars
-        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
 
       - name: 🧱 Build e Push da imagem
         uses: docker/build-push-action@v5

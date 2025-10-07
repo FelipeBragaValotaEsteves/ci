@@ -5,6 +5,7 @@
   "type": "commonjs",
   "main": "src/server.js",
   "scripts": {
+    "start": "node src/server.js",
     "initdb": "node src/initDatabase.js",
     "migrate": "npm run initdb && knex migrate:latest",
     "rollback": "knex migrate:rollback",

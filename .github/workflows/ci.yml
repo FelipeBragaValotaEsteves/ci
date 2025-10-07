@@ -33,49 +33,49 @@ jobs:
       DB_NAME: app_test_db
 
     steps:
-      - name: 🧩 Checkout do código
+      - name:  Checkout do código
         uses: actions/checkout@v4
 
-      - name: ⚙️ Instala Node.js
+      - name:  Instala Node.js
         uses: actions/setup-node@v4
         with:
           node-version: 20
           cache: npm
 
-      - name: 📦 Instala dependências
+      - name:  Instala dependências
         run: npm ci || npm install
 
-      - name: 🗄️ Inicializa banco de teste
+      - name:  Inicializa banco de teste
         run: node src/initDatabase.js
 
-      - name: 🧱 Executa migrations
+      - name:  Executa migrations
         run: npx knex migrate:latest --env test
 
-      - name: 🧪 Executa testes
+      - name:  Executa testes
         run: npm test
 
   docker:
-    name: 🐳 Build e Push Docker
+    name:  Build e Push Docker
     runs-on: ubuntu-latest
     needs: test
 
     steps:
-      - name: 📦 Checkout do código
+      - name:  Checkout do código
         uses: actions/checkout@v4
 
-      - name: 🔑 Login no Docker Hub
+      - name: Login no Docker Hub
         uses: docker/login-action@v3
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: 🏷️ Define TAG da imagem (versão do package.json)
+      - name: Define TAG da imagem (versão do package.json)
         id: vars
         run: |
           VERSION=$(node -p "require('./package.json').version")
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      - name: 🧱 Build e Push da imagem
+      - name:  Build e Push da imagem
         uses: docker/build-push-action@v5
         with:
           context: .

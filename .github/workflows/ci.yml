@@ -69,11 +69,17 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: 🏷️ Define TAG da imagem (versão do package.json)
+        id: vars
+        run: echo "VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
+
       - name: 🧱 Build e Push da imagem
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/users-api:latest
+          tags: |
+            ${{ secrets.DOCKERHUB_USERNAME }}/users-api:latest
+            ${{ secrets.DOCKERHUB_USERNAME }}/users-api:v${{ env.VERSION }}
           cache-from: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/users-api:cache
           cache-to: type=registry,ref=${{ secrets.DOCKERHUB_USERNAME }}/users-api:cache,mode=max
